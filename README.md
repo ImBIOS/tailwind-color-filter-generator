@@ -1,1 +1,1 @@
-# css-color-filter-generator
+# tailwind-color-filter-generator
