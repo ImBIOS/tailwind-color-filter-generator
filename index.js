@@ -493,6 +493,8 @@ function compute() {
   );
 
   // Update prediction leaderboard DOM element
+  predictionColorEl.innerText = input;
+  predictionColorEl.style.backgroundColor = input;
   predictionLeaderboardEl.innerHTML = "";
   let rank = 1;
   for (const [key, value] of predictions) {
