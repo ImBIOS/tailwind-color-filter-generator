@@ -1,3 +1,6 @@
+/** History of filter prediction */
+const colorHistory = new Map();
+
 /**
  * @description Convert percentage to decimal string
  * @param {number} percent
@@ -403,11 +406,13 @@ function compute() {
     lossMsg,
   };
 
-  if (res.result.loss < 1) {
+  const loss = res.result.loss;
+
+  if (loss < 1) {
     res.lossMsg = "This is a perfect result.";
-  } else if (res.result.loss < 5) {
-    res.lossMsg = "The is close enough.";
-  } else if (res.result.loss < 15) {
+  } else if (loss < 5) {
+    res.lossMsg = "The color is close enough.";
+  } else if (loss < 15) {
     res.lossMsg = "The color is somewhat off. Consider running it again.";
   } else {
     res.lossMsg = "The color is extremely off. Run it again!";
@@ -443,9 +448,66 @@ function compute() {
     tailwindText
   );
 
-  lossDetail.innerHTML = `Loss: ${res.result.loss.toFixed(1)}. <b>${
-    res.lossMsg
-  }</b>`;
+  lossDetail.innerHTML = `Loss: ${loss}. <b>${res.lossMsg}</b>`;
+
+  // ------------------------------ Color History - START ------------------------------ //
+
+  // Add hex color to color history
+  /** @type {Map} prediction history map */
+  const predictionHistory = colorHistory.get(input) || new Map();
+  predictionHistory.set(loss, res.result.filter);
+  colorHistory.set(input, predictionHistory);
+
+  // Get color history DOM element
+  const colorHistoryEl = document.getElementById("color-history");
+
+  // Update color history DOM element
+  colorHistoryEl.innerHTML = "";
+  for (const [key, value] of colorHistory) {
+    const bestLoss = Math.min(...value.keys());
+    const bestFilter = value.get(bestLoss);
+
+    const el = document.createElement("tr");
+    el.classList.add("color-history-item");
+    el.innerHTML = `
+      <td class="color-history-item__color" style="background-color: ${key}">${key}</td>
+      <td class="color-history-item__filter">${bestFilter}</td>
+      <td class="color-history-item__loss">${bestLoss}</td>
+    `;
+    colorHistoryEl.appendChild(el);
+  }
+
+  // ------------------------------ Color History - END ------------------------------ //
+
+  // ------------------------------ Prediction Leaderboard - START ------------------------------ //
+
+  // Get prediction leaderboard DOM element
+  const predictionColorEl = document.getElementById("prediction-color");
+  const predictionLeaderboardEl = document.getElementById(
+    "prediction-leaderboard"
+  );
+
+  // sort predictions by `predictionHistory` key
+  const predictions = new Map(
+    [...predictionHistory.entries()].sort((a, b) => a[0] - b[0])
+  );
+
+  // Update prediction leaderboard DOM element
+  predictionLeaderboardEl.innerHTML = "";
+  let rank = 1;
+  for (const [key, value] of predictions) {
+    const el = document.createElement("tr");
+    el.classList.add("prediction-leaderboard-item");
+    el.innerHTML = `
+      <td class="prediction-leaderboard-item__rank">${rank}</td>
+      <td class="prediction-leaderboard-item__loss">${key}</td>
+      <td class="prediction-leaderboard-item__filter">${value}</td>
+    `;
+    predictionLeaderboardEl.appendChild(el);
+    rank++;
+  }
+
+  // ------------------------------ Prediction Leaderboard - END ------------------------------ //
 }
 
 function validateColor(color) {

@@ -49,6 +49,7 @@
         </section>
 
         <section class="real-section">
+          <h2>Prediction</h2>
           <p>Real pixel:</p>
 
           <div class="color-wrapper">
@@ -110,6 +111,44 @@
 
         <span id="lossDetail"> Loss: 0 </span>
       </div>
+
+      <hr />
+
+      <section>
+        <h2>Leaderboard</h2>
+
+        <div class="flex gap justify-between">
+          <article>
+            <h3>Color History</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Color</th>
+                  <th>Best Filter</th>
+                  <th>Best Loss</th>
+                </tr>
+              </thead>
+              <tbody id="color-history"></tbody>
+            </table>
+          </article>
+
+          <article>
+            <h3>
+              <span id="prediction-color">#fff</span> Prediction Leaderboard
+            </h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Filter</th>
+                  <th>Loss</th>
+                </tr>
+              </thead>
+              <tbody id="prediction-leaderboard"></tbody>
+            </table>
+          </article>
+        </div>
+      </section>
 
       <footer class="site-footer">
         <span class="site-footer-owner"
