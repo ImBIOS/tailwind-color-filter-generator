@@ -3,8 +3,17 @@
   flex-direction: column;
 }
 
+.flex {
+  display: flex;
+  flex-direction: row;
+}
+
 .gap {
   gap: 1.2rem;
+}
+
+.justify-between {
+  justify-content: space-between;
 }
 
 a {
