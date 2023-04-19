@@ -14,13 +14,13 @@ function toDecimal(percent) {
 
     // If the decimalString more than 0 but less than 1,
     // Remove the zero for clean code
-    if (decimalString.length > 1 && decimalString[0] === "0") {
+    if (decimalString.length > 1 && decimalString[0] === '0') {
       return decimalString.slice(1);
     }
 
     return decimalString;
   } else {
-    return "0";
+    return '0';
   }
 }
 
@@ -30,36 +30,38 @@ function toDecimal(percent) {
  * @return {string} tailwind filter class
  */
 function cssToTailwind(css) {
-  css = css.replace("filter: ", "");
+  css = css.replace('filter: ', '');
   const inParenthesesRegExp = /\(([^)]+)\)/;
 
-  const cssArr = css.split(" ");
+  const cssArr = css.split(' ');
   cssArr.forEach((css, index, arr) => {
-    const isDeg = css.includes("deg");
-    const parenthesesIndex = css.indexOf("(");
+    const isDeg = css.includes('deg');
+    const parenthesesIndex = css.indexOf('(');
 
     const filterName = css.slice(0, parenthesesIndex);
     const filterNumber = isDeg
       ? inParenthesesRegExp.exec(css)[1]
       : toDecimal(+css.match(/\d+/)[0]);
 
-    const isOne = filterNumber === "1";
+    const isOne = filterNumber === '1';
 
     arr[index] = isOne
       ? `${filterName}-100`
       : `${filterName}-[${filterNumber}]`;
   });
 
-  return cssArr.join(" ");
+  return cssArr.join(' ');
 }
 
 function rgbToHex(r, g, b) {
   function componentToHex(c) {
     var hex = c.toString(16);
-    return hex.length == 1 ? "0" + hex : hex;
+    return hex.length == 1 ? '0' + hex : hex;
   }
 
-  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+  return (
+    '#' + componentToHex(r) + componentToHex(g) + componentToHex(b)
+  );
 }
 
 function hexToRgb(hex) {
@@ -69,7 +71,9 @@ function hexToRgb(hex) {
     return r + r + g + g + b + b;
   });
 
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(
+    hex
+  );
   return result
     ? [
         parseInt(result[1], 16),
@@ -85,13 +89,17 @@ class Color {
   }
 
   toRgb() {
-    return `rgb(${Math.round(this.r)}, ${Math.round(this.g)}, ${Math.round(
-      this.b
-    )})`;
+    return `rgb(${Math.round(this.r)}, ${Math.round(
+      this.g
+    )}, ${Math.round(this.b)})`;
   }
 
   toHex() {
-    return rgbToHex(Math.round(this.r), Math.round(this.g), Math.round(this.b));
+    return rgbToHex(
+      Math.round(this.r),
+      Math.round(this.g),
+      Math.round(this.b)
+    );
   }
 
   set(r, g, b) {
@@ -189,9 +197,15 @@ class Color {
   }
 
   invert(value = 1) {
-    this.r = this.clamp((value + (this.r / 255) * (1 - 2 * value)) * 255);
-    this.g = this.clamp((value + (this.g / 255) * (1 - 2 * value)) * 255);
-    this.b = this.clamp((value + (this.b / 255) * (1 - 2 * value)) * 255);
+    this.r = this.clamp(
+      (value + (this.r / 255) * (1 - 2 * value)) * 255
+    );
+    this.g = this.clamp(
+      (value + (this.g / 255) * (1 - 2 * value)) * 255
+    );
+    this.b = this.clamp(
+      (value + (this.b / 255) * (1 - 2 * value)) * 255
+    );
   }
 
   hsl() {
@@ -280,7 +294,14 @@ class Solver {
     const A = wide.loss;
     const c = 2;
     const A1 = A + 1;
-    const a = [0.25 * A1, 0.25 * A1, A1, 0.25 * A1, 0.2 * A1, 0.2 * A1];
+    const a = [
+      0.25 * A1,
+      0.25 * A1,
+      A1,
+      0.25 * A1,
+      0.2 * A1,
+      0.2 * A1,
+    ];
     return this.spsa(A, a, c, wide.values, 500);
   }
 
@@ -321,7 +342,10 @@ class Solver {
       let max = 100;
       if (idx === 2 /* saturate */) {
         max = 7500;
-      } else if (idx === 4 /* brightness */ || idx === 5 /* contrast */) {
+      } else if (
+        idx === 4 /* brightness */ ||
+        idx === 5 /* contrast */
+      ) {
         max = 200;
       }
 
@@ -369,36 +393,37 @@ class Solver {
     }
     return `invert(${fmt(0)}%) sepia(${fmt(1)}%) saturate(${fmt(
       2
-    )}%) hue-rotate(${fmt(3, 3.6)}deg) brightness(${fmt(4)}%) contrast(${fmt(
-      5
-    )}%)`;
+    )}%) hue-rotate(${fmt(3, 3.6)}deg) brightness(${fmt(
+      4
+    )}%) contrast(${fmt(5)}%)`;
   }
 
   css(filters) {
     function fmt(idx, multiplier = 1) {
       return Math.round(filters[idx] * multiplier);
     }
-    return `filter: invert(${fmt(0)}%) sepia(${fmt(1)}%) saturate(${fmt(
-      2
-    )}%) hue-rotate(${fmt(3, 3.6)}deg) brightness(${fmt(4)}%) contrast(${fmt(
-      5
-    )}%);`;
+    return `filter: invert(${fmt(0)}%) sepia(${fmt(
+      1
+    )}%) saturate(${fmt(2)}%) hue-rotate(${fmt(
+      3,
+      3.6
+    )}deg) brightness(${fmt(4)}%) contrast(${fmt(5)}%);`;
   }
 }
 
 function compute() {
-  const input = document.getElementById("color-input").value;
+  const input = document.getElementById('color-input').value;
   const rgb = hexToRgb(input);
 
   if (rgb.length !== 3) {
-    alert("Invalid format!");
+    alert('Invalid format!');
     return;
   }
 
   const color = new Color(rgb[0], rgb[1], rgb[2]);
   const solver = new Solver(color);
   const result = solver.solve();
-  let lossMsg = "";
+  let lossMsg = '';
   const res = {
     color,
     solver,
@@ -409,42 +434,58 @@ function compute() {
   const loss = res.result.loss;
 
   if (loss < 1) {
-    res.lossMsg = "This is a perfect result.";
+    res.lossMsg = 'This is a perfect result.';
   } else if (loss < 5) {
-    res.lossMsg = "The color is close enough.";
+    res.lossMsg = 'The color is close enough.';
   } else if (loss < 15) {
-    res.lossMsg = "The color is somewhat off. Consider running it again.";
+    res.lossMsg =
+      'The color is somewhat off. Consider running it again.';
   } else {
-    res.lossMsg = "The color is extremely off. Run it again!";
+    res.lossMsg = 'The color is extremely off. Run it again!';
   }
 
-  const filterPixel = document.getElementById("filterPixel");
-  const filterPixelText = document.getElementById("filterPixelText");
-  const twFilterPixelText = document.getElementById("twFilterPixelText");
-  const lossDetail = document.getElementById("lossDetail");
-  const realPixel = document.getElementById("realPixel");
-  const realPixelTextRGB = document.getElementById("realPixelTextRGB");
-  const realPixelTextHEX = document.getElementById("realPixelTextHEX");
+  const filterPixel = document.getElementById('filterPixel');
+  const filterPixelText = document.getElementById('filterPixelText');
+  const twFilterPixelText = document.getElementById(
+    'twFilterPixelText'
+  );
+  const lossDetail = document.getElementById('lossDetail');
+  const realPixel = document.getElementById('realPixel');
+  const realPixelTextRGB = document.getElementById(
+    'realPixelTextRGB'
+  );
+  const realPixelTextHEX = document.getElementById(
+    'realPixelTextHEX'
+  );
   const rgbColor = res.color.toRgb();
   const hexColor = res.color.toHex();
 
   realPixel.style.backgroundColor = rgbColor;
   realPixelTextRGB.innerText = rgbColor;
-  realPixelTextRGB.parentElement.setAttribute("data-clipboard-text", rgbColor);
+  realPixelTextRGB.parentElement.setAttribute(
+    'data-clipboard-text',
+    rgbColor
+  );
   realPixelTextHEX.innerText = hexColor;
-  realPixelTextHEX.parentElement.setAttribute("data-clipboard-text", hexColor);
+  realPixelTextHEX.parentElement.setAttribute(
+    'data-clipboard-text',
+    hexColor
+  );
 
   filterPixel.style.filter = String(res.result.filterRaw);
   filterPixel.style.webkitFilter = String(res.result.filterRaw);
 
   const cssText = res.result.filter;
   filterPixelText.innerText = cssText;
-  filterPixelText.parentElement.setAttribute("data-clipboard-text", cssText);
+  filterPixelText.parentElement.setAttribute(
+    'data-clipboard-text',
+    cssText
+  );
 
   const tailwindText = cssToTailwind(res.result.filter);
   twFilterPixelText.innerText = tailwindText;
   twFilterPixelText.parentElement.setAttribute(
-    "data-clipboard-text",
+    'data-clipboard-text',
     tailwindText
   );
 
@@ -459,16 +500,16 @@ function compute() {
   colorHistory.set(input, predictionHistory);
 
   // Get color history DOM element
-  const colorHistoryEl = document.getElementById("color-history");
+  const colorHistoryEl = document.getElementById('color-history');
 
   // Update color history DOM element
-  colorHistoryEl.innerHTML = "";
+  colorHistoryEl.innerHTML = '';
   for (const [key, value] of colorHistory) {
     const bestLoss = Math.min(...value.keys());
     const bestFilter = value.get(bestLoss);
 
-    const el = document.createElement("tr");
-    el.classList.add("color-history-item");
+    const el = document.createElement('tr');
+    el.classList.add('color-history-item');
     el.innerHTML = `
       <td class="color-history-item__color" style="background-color: ${key}">${key}</td>
       <td class="color-history-item__filter">${bestFilter}</td>
@@ -482,9 +523,11 @@ function compute() {
   // ------------------------------ Prediction Leaderboard - START ------------------------------ //
 
   // Get prediction leaderboard DOM element
-  const predictionColorEl = document.getElementById("prediction-color");
+  const predictionColorEl = document.getElementById(
+    'prediction-color'
+  );
   const predictionLeaderboardEl = document.getElementById(
-    "prediction-leaderboard"
+    'prediction-leaderboard'
   );
 
   // sort predictions by `predictionHistory` key
@@ -495,15 +538,15 @@ function compute() {
   // Update prediction leaderboard DOM element
   predictionColorEl.innerText = input;
   predictionColorEl.style.backgroundColor = input;
-  predictionLeaderboardEl.innerHTML = "";
+  predictionLeaderboardEl.innerHTML = '';
   let rank = 1;
   for (const [key, value] of predictions) {
-    const el = document.createElement("tr");
-    el.classList.add("prediction-leaderboard-item");
+    const el = document.createElement('tr');
+    el.classList.add('prediction-leaderboard-item');
     el.innerHTML = `
       <td class="prediction-leaderboard-item__rank">${rank}</td>
-      <td class="prediction-leaderboard-item__loss">${key}</td>
-      <td class="prediction-leaderboard-item__filter">${value}</td>
+      <td class="prediction-leaderboard-item__loss">${value}</td>
+      <td class="prediction-leaderboard-item__filter">${key}</td>
     `;
     predictionLeaderboardEl.appendChild(el);
     rank++;
@@ -513,35 +556,37 @@ function compute() {
 }
 
 function validateColor(color) {
-  const submitButton = document.getElementById("action-button");
+  const submitButton = document.getElementById('action-button');
   const HEXColorRegExp = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
   const isValid = HEXColorRegExp.test(color);
 
   if (isValid) {
-    submitButton.classList.remove("disabled");
-  } else if (!submitButton.classList.contains("disabled")) {
-    submitButton.classList.add("disabled");
+    submitButton.classList.remove('disabled');
+  } else if (!submitButton.classList.contains('disabled')) {
+    submitButton.classList.add('disabled');
   }
 }
 
 function onStart() {
-  const copyableElements = document.querySelectorAll(".copyable");
-  const copyEl = document.querySelectorAll(".pos");
+  const copyableElements = document.querySelectorAll('.copyable');
+  const copyEl = document.querySelectorAll('.pos');
 
-  new ClipboardJS("span.copyable");
+  new ClipboardJS('span.copyable');
 
   copyableElements.forEach((el, index) => {
-    el.addEventListener("click", () => {
-      copyEl[index].classList.add("copied");
+    el.addEventListener('click', () => {
+      copyEl[index].classList.add('copied');
 
       setTimeout(() => {
-        copyEl[index].classList.remove("copied");
+        copyEl[index].classList.remove('copied');
       }, 1500);
     });
   });
 
-  document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("color-input").removeAttribute("disabled");
+  document.addEventListener('DOMContentLoaded', function () {
+    document
+      .getElementById('color-input')
+      .removeAttribute('disabled');
   });
 }
 
