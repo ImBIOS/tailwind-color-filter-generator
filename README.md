@@ -1,27 +1,26 @@
-# Tailwind Color Filter Generator
+# Tailwind CSS Color Filter Generator: Generate and Copy Custom Filters in Seconds
 
-This is a simple tool to generate a color filter for Tailwind CSS. It will generate a filter that will make the color of the element similar to the color you choose.
+Easily generate custom color filters for your Tailwind CSS projects. This tool provides an intuitive interface for generating a CSS filter that will colorize your elements just the way you want.
 
-## Usage
+## 🚀 Quick Start
 
-1. Open the [Tailwind Color Filter Generator](https://tailwind-color-filter-generator.vercel.app/)
+1. 🌍 Visit the [Tailwind CSS Color Filter Generator](https://tailwind-color-filter-generator.vercel.app/)
+2. 🎨 Input your desired color
+3. 🖱️ Hit the "Get Filter!" button multiple times for the most accurate result
+4. 📋 Copy the generated filter and use it in your project
 
-2. Type a color
+## ✨ Features
 
-3. Click on the "Get Filter!" button
+- [x] Generate custom color filters tailored for Tailwind CSS
+- [ ] Instantly copy the generated filter to your clipboard
+- [x] Keep track of prediction history for future reference
+- [x] Rank previous predictions by their accuracy
+- [ ] Persist your prediction history between sessions
 
-4. Click it repeatedly to get the most accurate filter
+## 🤝 Contributing
 
-5. Copy the filter and paste it where you need it
+Feel free to open issues or PRs!
 
-## Features
+## License
 
-- [x] Generate a filter for a color
-
-- [x] Copy the filter to clipboard
-
-- [x] List the history of predictions
-
-- [x] Rank the predicitons by accuracy
-
-- [ ] Presist the history of predictions
+[MIT](./license)
