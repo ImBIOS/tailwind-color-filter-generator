@@ -4,7 +4,7 @@ Easily generate custom color filters for your Tailwind CSS projects. This tool p
 
 ## 🚀 Quick Start
 
-1. 🌍 Visit the [Tailwind CSS Color Filter Generator](https://tailwind-color-filter-generator.vercel.app/)
+1. 🌍 Visit the [Tailwind CSS Color Filter Generator](https://tailwind-color-filter-generator.imbios.dev/)
 2. 🎨 Input your desired color
 3. 🖱️ Hit the "Get Filter!" button multiple times for the most accurate result
 4. 📋 Copy the generated filter and use it in your project
