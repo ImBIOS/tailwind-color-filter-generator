@@ -1229,7 +1229,20 @@
           <div class="material-textfield">
             <input
               disabled
-              id="color-input"
+              id="base-input"
+              class="base"
+              type="text"
+              placeholder="#000"
+              type="text"
+              maxlength="7"
+              oninput="validateColor(this.value)"
+            />
+            <label for="base-input">Starting / Base Hex Color</label>
+          </div>
+          <div class="material-textfield">
+            <input
+              disabled
+              id="target-input"
               class="target"
               type="text"
               placeholder="#000"
@@ -1237,14 +1250,15 @@
               maxlength="7"
               oninput="validateColor(this.value)"
             />
-            <label>Desired Hex Color</label>
+            <label for="target-input">Desired Hex Color</label>
           </div>
           <a
             id="action-button"
             class="btn3d btn-default action-button disabled"
             onclick="compute()"
-            ><span>Get Filter!</span></a
           >
+            <span>Get Filter!</span>
+          </a>
         </section>
 
         <section class="real-section">
